@@ -1,0 +1,56 @@
+ЛР10 · agromarket-react. Порядок работы
+
+1) git switch main && git pull
+   git switch -c test/react-components
+
+2) Установка:
+   npm install -D vitest jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event @vitest/coverage-v8
+
+3) package.json -> "scripts" (ВАЖНО: build и preview должны быть, если их не было с ЛР9):
+   "dev": "vite",
+   "build": "vite build",
+   "preview": "vite preview",
+   "server": "json-server --watch db.json --port 3001",
+   "test": "vitest run",
+   "test:watch": "vitest",
+   "coverage": "vitest run --coverage",
+   "e2e": "playwright test",
+   "e2e:prod": "playwright test"
+   (адрес для e2e:prod задавайте переменной E2E_BASE_URL — см. ниже;
+    в PowerShell:  $env:E2E_BASE_URL="https://agromarket-01damir0100-ai.vercel.app"; npx playwright test
+    в bash:        E2E_BASE_URL=https://agromarket-01damir0100-ai.vercel.app npx playwright test)
+
+4) Скопируйте файлы из этого архива поверх проекта (сохраняя папки):
+   vite.config.js                         заменить (добавлен блок test)
+   src/api.js                             заменить (понятные ошибки сети)
+   src/App.jsx                            заменить (состояния загрузка / ошибка / пусто)
+   src/components/ProductCard.jsx         заменить (добавлен data-testid)
+   src/components/LoginForm.jsx           заменить (добавлены aria-label)
+   src/components/AddProductForm.jsx      заменить (добавлены aria-label)
+   src/components/ContactForm.jsx         заменить
+   src/test/*, src/**/*.test.*            новые файлы (38 тестов)
+   Если ProductCard.jsx у вас уже изменён — просто добавьте  data-testid="product-card"  в <article>.
+
+5) npm test  ->  38 зелёных тестов.   npm run coverage  ->  запишите % Lines.
+
+6) Коммит и PR (как в ЛР8, с ревью напарника):
+   git add .
+   git commit -m "test: component tests for catalog, forms and api"
+   git push -u origin test/react-components
+
+7) E2E: git switch main && git pull && git switch -c test/e2e
+   npm install -D @playwright/test
+   npx playwright install chromium
+   Файлы: playwright.config.js, e2e/buyer.spec.js
+   В .gitignore добавьте строки:  test-results/   playwright-report/   coverage/
+   Локально: запустите сервер API и npm run dev, затем  npm run e2e
+   Продакшен: E2E_BASE_URL=https://agromarket-ЛОГИН.vercel.app npx playwright test
+   Коммит: test: e2e buyer scenario
+
+8) CI: ветка ci/react-tests, файлы .github/workflows/ci.yml (заменить) и e2e.yml (новый).
+   GitHub -> Settings -> Secrets and variables -> Actions -> Variables:
+   PRODUCTION_URL = https://agromarket-ЛОГИН.vercel.app
+   Коммит: ci: react tests in PR and scheduled e2e
+   Затем включите обязательную проверку build для main (Settings -> Branches).
+
+9) README: допишите раздел из файла README-lab10.md и ПОДСТАВЬТЕ свои числа.
