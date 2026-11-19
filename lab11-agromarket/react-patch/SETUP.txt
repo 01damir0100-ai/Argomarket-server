@@ -1,0 +1,12 @@
+ЛР11 · agromarket-react (часть про фронтенд). Ветка: git switch -c feature/show-validation-errors
+
+Файлы (заменить в проекте):
+  src/api.js                          — в ошибке теперь status и details; функция errorMessages
+  src/components/LoginForm.jsx        — выводит список ошибок (валидация и 429)
+  src/components/AddProductForm.jsx   — то же
+  src/components/LoginForm.test.jsx, AddProductForm.test.jsx, api.test.js — +5 тестов
+Новые необязательные файлы (бонус): .github/dependabot.yml, CHANGELOG.md
+
+npm test  ->  все тесты зелёные (43).
+Коммит: feat: show server validation errors in forms
+Релиз: см. инструкцию для сервера (git tag v1.0.0 в этом репозитории тоже).
